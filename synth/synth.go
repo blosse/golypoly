@@ -1,15 +1,12 @@
 package synth
 
-type Oscillator struct {
-	phase float64
-	amplitude float64
-	wave int
+type AudioUnit interface {
+	Process() float32
 }
+
 type Synth struct {
-	osc1 Oscillator
-	osc2 Oscillator
-	osc3 Oscillator
-	osc4 Oscillator
+	Osc1 Oscillator
+	SampleRate float64
 }
 
 const (
@@ -18,5 +15,10 @@ const (
 	triangle
 	saw
 )
-	
-	
+
+func (synth *Synth) AudioCallback(out []float32) {
+	// Call the process functions of all AudioUnits here
+	for i := range out {
+		out[i] = float32(synth.Osc1.Process())
+	}
+}

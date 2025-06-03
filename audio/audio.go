@@ -1,9 +1,9 @@
-package main
+package audio
 
 import (
 	"log"
-
 	"github.com/gordonklaus/portaudio"
+	"github.com/blosse/golypoly/synth"
 )
 
 type AudioSettings struct {
@@ -21,25 +21,21 @@ var audioSettings = AudioSettings {
 	framesPerBuffer: 64,
 }
 
-func AudioCallback() {}
-
-func StartAudio() *portaudio.Stream {
+func StartAudio(synth synth.Synth) *portaudio.Stream {
 	err := portaudio.Initialize()
 	if err != nil {
 		log.Fatalf("Unable to initialize portaudio", err)
 	}
-
 	stream, err := portaudio.OpenDefaultStream(
 		audioSettings.numInputChannels,
 		audioSettings.numOutputChannels,
 		audioSettings.sampleRate,
 		audioSettings.framesPerBuffer,
-		AudioCallback,
-		/*Add data pointer here*/)
+		synth.AudioCallback,
+		)
 	if err != nil {
 		log.Fatalf("Unable to open default stream", err)
 	}
-
 	err = stream.Start()
 	if err != nil {
 		log.Fatalf("Unable to start stream", err)
