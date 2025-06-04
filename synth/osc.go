@@ -10,7 +10,7 @@ type Oscillator struct {
 	amplitudeBits uint64 // Atomic
 	phase float64
 	sampleRate float64
-	waveform atomic.Value //func(phase float64) float64
+	waveform atomic.Value // func(phase float64) float64
 }
 
 func NewOscillator(sampleRate float64, waveform func(phase float64) float64) *Oscillator {
